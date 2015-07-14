@@ -3,6 +3,7 @@ package movieAnalysis;
 import com.datastax.driver.core.Session;
 import com.datastax.spark.connector.cql.CassandraConnector;
 import com.datastax.spark.connector.japi.CassandraJavaUtil;
+import com.datastax.spark.connector.japi.SparkContextJavaFunctions;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import sparkUtils.SparkConfSetup;
@@ -37,10 +38,11 @@ public class LoadMovieData implements Serializable {
         CassandraConnector connector = SparkConfSetup.getCassandraConnector();
         initCassandra(connector);
 
-        JavaRDD<MovieData> movieDataJavaRDD = LoadMovieData.loadMovieData(javaSparkContext);
+        //JavaRDD<MovieData> movieDataRDD = LoadMovieData.loadMovieData(javaSparkContext);
+        JavaRDD<MovieData> movieDataRDD = LoadMovieData.readMovieData(javaSparkContext);
 
         if (limitLoad)
-            LoadMovieData.loadLimitedRatingsData(javaSparkContext, movieDataJavaRDD);
+            LoadMovieData.loadLimitedRatingsData(javaSparkContext, movieDataRDD);
         else
             LoadMovieData.loadRatingsData(javaSparkContext);
 
@@ -80,7 +82,6 @@ public class LoadMovieData implements Serializable {
 
         List<MovieData> movieDataList = movieDataRDD.take(100);
         List<Integer> movieIdList = movieDataList.stream().map(movie -> movie.getMovie_id()).collect(Collectors.toList());
-
 
         JavaRDD<RatingData> ratingDataRDD = rawRatingsData
                 .map(nxtLine -> processRatingsDataLine(nxtLine))
@@ -158,6 +159,16 @@ public class LoadMovieData implements Serializable {
             }
         }
         return optMovieData;
+    }
+
+    private static JavaRDD<MovieData> readMovieData(JavaSparkContext javaSparkContext) {
+
+        SparkContextJavaFunctions sparkContextJavaFunctions = CassandraJavaUtil.javaFunctions(javaSparkContext);
+
+        JavaRDD<MovieData> movieDataRDD = sparkContextJavaFunctions
+                .cassandraTable("movie_db", "movies", CassandraJavaUtil.mapRowTo(MovieData.class));
+
+        return movieDataRDD;
     }
 
 }
