@@ -35,7 +35,11 @@ public class LoadData {
         try (Cluster clusterConn = connect(hostname)) {
             try (Session session = clusterConn.newSession()) {
 
-                PreparedStatement statement = null;
+                PreparedStatement statement = session.prepare(
+                        "INSERT INTO movie_db.movies " +
+                                "(movie_id, title, categories) " +
+                                "VALUES (?, ?, ?);");
+
                 readMovieData(movieDataLocation, movieData -> saveMovieData(statement, session, movieData));
             }
         }
@@ -88,7 +92,11 @@ public class LoadData {
     }
 
     private void saveMovieData(PreparedStatement statement, Session session, MovieData movieData) {
-
+        BoundStatement boundStatement = new BoundStatement(statement);
+        session.execute(boundStatement.bind(
+                movieData.getMovie_id(),
+                movieData.getTitle(),
+                movieData.getCategories()));
     }
 
 }
