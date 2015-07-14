@@ -13,7 +13,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * dse hadoop fs -copyFromLocal /arcadia/ml-10M100K/ratings.dat /ml-10M100K/ratings.dat
+ * dse hadoop fs -copyFromLocal ml-10M100K/ratings.dat /ml-10M100K/ratings.dat
+ * dse hadoop fs -copyFromLocal ml-10M100K/movies.dat /ml-10M100K/movies.dat
  * dse hadoop fs -ls /ml-10M100K
  * dse spark-submit --class movieAnalysis.LoadMovieData ./target/IntroSparkCassandra-0.1.jar true
  */
