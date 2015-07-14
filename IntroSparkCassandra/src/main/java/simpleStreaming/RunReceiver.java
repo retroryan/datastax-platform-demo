@@ -13,7 +13,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import scala.Tuple2;
-import simpleSpark.SparkConfSetup;
+import sparkUtils.SparkConfSetup;
 
 import java.io.Serializable;
 import java.util.Arrays;

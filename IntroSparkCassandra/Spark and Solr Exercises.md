@@ -1,8 +1,8 @@
 ## Spark and Solr Exercises with the Movie Lens Data
 
-* The template class to load and analyze the Bible Verses Movie Lens Data in Load Move Lens Data.  It can be run with:
+* The template class to load and analyze the Movie Lens Data in Load Move Lens Data.  The true flag limits the raitings data so only the raitings on the first 100 movies is loaded to prevent OOM errors. It can be run with:
 
-`dse spark-submit --class simpleSpark.KJVWordCount ./target/SearchAnalyticsDemo-0.1.jar`
+`dse spark-submit --class movieAnalysis.LoadMovieData ./target/IntroSparkCassandra-0.1.jar true`
 
 * Search and Analytics can be combined to find and analyze specific data.  In this exercise we will use search for verses that contain specific words and then count the number of words in that verse.
 
@@ -14,27 +14,7 @@
               .where("solr_query='title:*Death* AND category:Drama'");
 ```
 
+* Modify the class AnalyzeMovieData metho readMovieData to search for specific movies and then run AnalyzeMovieData with:
 
-Additional Functionality is provided on RDD's that are key / value pairs.  These RDDs are called pair RDDs.  They provide additional APIs that are performed on each key in the RDD.  Some common examples are reduceByKey which performs a reduce function that operates on each key.  Or there is a join operation which joins two RDD's by key.  
+`dse spark-submit --class movieAnalysis.LoadMovieData ./target/IntroSparkCassandra-0.1.jar true`
 
-Pair RDD's are defined using a Tuple of 2.  Tuples are defined as "a finite ordered list of elements".  They can be thought of as a generic container of data. In the case of Pair RDD's the first element is the key and the second element is the value.  
-
-In Java a Pair RDD can be created using the method `mapToPair`.  It operates on each element in an RDD and returns a new element that is a Tuple2.   The method 'mapToPair' then expects a function that takes a single element and returns a pair of key and value.
-
-* Split each string into a list of words.  Hint - use flatMap and then split each line with `nextLine.split("\\s+")`
-
-* Convert each word in the RDD to a Pair RDD of (Word, 1) using `mapToPair`.  The second value is what will be used to count each word in the list.
-
-* Use `reduceByKey` to count all words.
-
-* Map the results of the list to the `WordCountFileName` to make it easy to save out to Cassandra.
-
-* Save the count of words to Cassandra
-
-## Bonus Exercises - Analyzing the results
-
-* Filter out stop words to improve the accuracy of the count.  A stopWords.txt file is included in the data directory.
-
-* Map the results to a Pair RDD with the count as the key
-
-* Find the top word counts out of the RDD.

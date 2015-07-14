@@ -6,6 +6,8 @@
 
 * Verify the Solr core was created by browsing to the [Solr Management Interface](http://localhost:8983/solr) and trying some basic queries.
 
+* Experiment with different Solr Queries in the management interface.
+
 * In cqlsh you can also run some queries, i.e.:
 
 `select * from movies where solr_query = 'categories:Drama';`

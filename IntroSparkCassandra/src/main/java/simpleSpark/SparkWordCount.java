@@ -2,18 +2,13 @@ package simpleSpark;
 
 import com.datastax.driver.core.Session;
 import com.datastax.spark.connector.cql.CassandraConnector;
-import com.datastax.spark.connector.japi.rdd.CassandraJavaPairRDD;
-import org.apache.spark.api.java.JavaPairRDD;
-import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import scala.Tuple2;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
-import org.apache.spark.api.java.JavaRDD;
+import sparkUtils.SparkConfSetup;
 
 import static com.datastax.spark.connector.japi.CassandraJavaUtil.*;
 

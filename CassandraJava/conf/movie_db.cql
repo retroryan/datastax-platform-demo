@@ -9,7 +9,7 @@ create table movie_db.movies (
 create table movie_db.rating_by_movie (
     movie_id int,
     user_id int,
-    rating decimal,
+    rating float,
     timestamp int,
     primary key(movie_id, user_id)
 );

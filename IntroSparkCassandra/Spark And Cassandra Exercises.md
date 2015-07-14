@@ -62,11 +62,13 @@ The goal of this exercise is to write the list of People in the class BasicReadW
 
 * The static import `import static com.datastax.spark.connector.japi.CassandraJavaUtil.*;` brings into scope most of the methods that are needed for working with the Spark Cassandra Connector in Java
 * The Java Spark Context has already been setup and passed into the method.
-* The most import method is `javaFunctions` which converts a JavaRDD to a RDDJavaFunctions.  That class is a Java API Wrapper around the standard RDD functions and adds functionality to interact with Cassandra.
-* From the `RDDJavaFunctions` instance that is returned call the `writeBuilder` that defines the mapping of the RDD into Cassandra.  For example the following call:
+* The method `javaFunctions` converts a JavaRDD to a RDDJavaFunctions.  That class is a Java API Wrapper around the standard RDD functions and adds functionality to interact with Cassandra.
+* Parallelize the list of People into a Spark RDD using - javaSparkContext.parallelize(people)
+* From the `RDDJavaFunctions` instance that is returned call the `writeBuilder`.  This defines how to write a Spark RDD into Cassandra Table.  For example the following call:
   * `writerBuilder("test", "people", mapToRow(Person.class))`
 
   Maps the write into the keyspace test and the table people.  It then uses a Java Bean Mapper to map the Person Class to the proper columns in the people table.
+  
 * Finally call saveToCassandra to persist all of the entries in the RDD to Cassandra.
 
 
@@ -91,11 +93,6 @@ In the next exercise we are going to read data out of Cassandra into a Spark RDD
 
 * Use a projection to select only certain columns from the table `select("id")`
 
-## Next Steps
-
-[Word Count Exercises using Sherlock Holmes](WORD_COUNT.md)
-
-For Word Count Exercises using the KJV of the Bible See the Search Analytics Demo
 
 [See the Streaming Exercises to Learn about Spark Streaming](STREAMING_EXERCISES.md)
 

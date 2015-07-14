@@ -26,15 +26,15 @@ public class LoadData {
 
     private void loadAndSaveMovieData() throws IOException {
         try (Cluster clusterConn = connect(DSE_NODE_IP)) {
-            Session session = clusterConn.newSession();
+            try (Session session = clusterConn.newSession()) {
 
-            PreparedStatement statement = session.prepare(
-                    "INSERT INTO movie_db.movies " +
-                            "(movie_id, title, categories) " +
-                            "VALUES (?, ?, ?);");
+                PreparedStatement statement = session.prepare(
+                        "INSERT INTO movie_db.movies " +
+                                "(movie_id, title, categories) " +
+                                "VALUES (?, ?, ?);");
 
-            readMovieData(DATA_FILE_DIR + MOVIE_DAT, movieData -> saveMovieData(statement, session, movieData));
-
+                readMovieData(DATA_FILE_DIR + MOVIE_DAT, movieData -> saveMovieData(statement, session, movieData));
+            }
         }
     }
 
@@ -62,22 +62,26 @@ public class LoadData {
         while (line != null) {
             //save to Cassandra here
             line = reader.readLine();
-            if (line != null && line.length() > 0) {
-                String[] split = line.split("::");
-                if (split.length == 3) {
-                    int id = Integer.parseInt(split[0]);
-                    String title = split[1];
-                    String[] categoryArray = split[2].split("\\|");
-                    Set<String> categories = null;
-                    if (categoryArray.length > 0)
-                        categories = new HashSet<>(Arrays.asList(categoryArray));
-
-                    MovieData movieData = new MovieData(id, title, categories);
-                    movieDataConsumer.accept(movieData);
-                }
-            }
+            processMovieDataLine(movieDataConsumer, line);
         }
 
+    }
+
+    private void processMovieDataLine(Consumer<MovieData> movieDataConsumer, String line) {
+        if (line != null && line.length() > 0) {
+            String[] split = line.split("::");
+            if (split.length == 3) {
+                int id = Integer.parseInt(split[0]);
+                String title = split[1];
+                String[] categoryArray = split[2].split("\\|");
+                Set<String> categories = null;
+                if (categoryArray.length > 0)
+                    categories = new HashSet<>(Arrays.asList(categoryArray));
+
+                MovieData movieData = new MovieData(id, title, categories);
+                movieDataConsumer.accept(movieData);
+            }
+        }
     }
 
     private void saveMovieData(PreparedStatement statement, Session session, MovieData movieData) {

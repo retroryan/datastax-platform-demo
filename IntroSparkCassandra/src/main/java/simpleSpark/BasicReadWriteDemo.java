@@ -12,7 +12,7 @@ import org.apache.hadoop.util.StringUtils;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.api.java.function.Function;
+import sparkUtils.SparkConfSetup;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -68,14 +68,6 @@ public class BasicReadWriteDemo {
         );
 
 
-        JavaRDD<Person> peopleRDD = javaSparkContext.parallelize(people);
-
-        JavaPairRDD<Integer, Person> integerPersonJavaPairRDD = peopleRDD.keyBy(np -> np.getId());
-
-        RDDJavaFunctions<Person> cassandraPersonRDD = CassandraJavaUtil.javaFunctions(peopleRDD);
-
-        cassandraPersonRDD.writerBuilder("test", "people", CassandraJavaUtil.mapToRow(Person.class)).saveToCassandra();
-
 
 
     }
@@ -87,25 +79,6 @@ public class BasicReadWriteDemo {
 
         SparkContextJavaFunctions sparkContextJavaFunctions = CassandraJavaUtil.javaFunctions(javaSparkContext);
 
-        CassandraJavaRDD<Person> personCassandraJavaRDD = sparkContextJavaFunctions
-                .cassandraTable("test", "people", CassandraJavaUtil.mapRowTo(Person.class));
-
-
-        JavaRDD<String> readPeopleRDD =  personCassandraJavaRDD
-                .map(Person::toString);
-
-        System.out.println("Data as Person beans: \n" + StringUtils.join("\n", readPeopleRDD.collect()));
-
-
-        //   select id from test.people where id=45;
-
-        JavaRDD<String> rdd4 = sparkContextJavaFunctions
-                .cassandraTable("test", "people")
-                .select("id")
-                .where("id = 45")
-                .map(CassandraRow::toString);
-
-        System.out.println("Data with only 'id' column fetched: \n" + StringUtils.join("\n", rdd4.collect()));
 
     }
 
