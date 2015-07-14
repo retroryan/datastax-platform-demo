@@ -40,7 +40,7 @@ The workshop requires the following software:
 
 ## Next Steps
 
-* [Intro to CQL and Cassandra Data Modeling](IntroCassandra/README.md)
+* [Intro to CQL and Cassandra Data Modeling](IntroCassandra/STOCK_CQL.md)
 * [Intro to Cassandra and Java](CassandraJava/README.md)
 * [Intro to Spark and Cassandra](IntroSparkCassandra/README.md)
 
