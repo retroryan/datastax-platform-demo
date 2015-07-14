@@ -38,8 +38,9 @@ public class LoadMovieData implements Serializable {
         CassandraConnector connector = SparkConfSetup.getCassandraConnector();
         initCassandra(connector);
 
-        //JavaRDD<MovieData> movieDataRDD = LoadMovieData.loadMovieData(javaSparkContext);
         JavaRDD<MovieData> movieDataRDD = LoadMovieData.readMovieData(javaSparkContext);
+        long moviesCount = movieDataRDD.count();
+        System.out.println("found moviesCount = " + moviesCount);
 
         if (limitLoad)
             LoadMovieData.loadLimitedRatingsData(javaSparkContext, movieDataRDD);
@@ -54,7 +55,6 @@ public class LoadMovieData implements Serializable {
 
         try (Session session = connector.openSession()) {
             session.execute("TRUNCATE movie_db.rating_by_movie");
-            session.execute("TRUNCATE movie_db.movies");
         }
     }
 
@@ -82,6 +82,8 @@ public class LoadMovieData implements Serializable {
 
         List<MovieData> movieDataList = movieDataRDD.take(100);
         List<Integer> movieIdList = movieDataList.stream().map(movie -> movie.getMovie_id()).collect(Collectors.toList());
+        int size = movieDataList.size();
+        System.out.println("size = " + size);
 
         JavaRDD<RatingData> ratingDataRDD = rawRatingsData
                 .map(nxtLine -> processRatingsDataLine(nxtLine))
