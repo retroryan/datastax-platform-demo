@@ -56,8 +56,8 @@
                 <configuration>
                     <mainClass>datastaxWorkshop.LoadData</mainClass>
                     <arguments>
+                        <argument>/arcadia/MovieLensData/ml-10M100K/movies.dat</argument>
                         <argument>127.0.0.1</argument>
-                        <argument>9999</argument>
                     </arguments>
                 </configuration>
             </plugin>

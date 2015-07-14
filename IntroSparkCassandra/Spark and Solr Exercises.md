@@ -14,7 +14,11 @@
               .where("solr_query='title:*Death* AND category:Drama'");
 ```
 
-* Modify the class AnalyzeMovieData metho readMovieData to search for specific movies and then run AnalyzeMovieData with:
+* Modify the class SearchMovieData method readMovieData to search for specific movies and then run AnalyzeMovieData with:
 
 `dse spark-submit --class movieAnalysis.LoadMovieData ./target/IntroSparkCassandra-0.1.jar true`
+
+*  Find the average of the movies use Spark SQL
+
+`dse spark-submit --class movieAnalysis.AnalyzeMovieData --executor-memory 2G ./target/IntroSparkCassandra-0.1.jar`
 

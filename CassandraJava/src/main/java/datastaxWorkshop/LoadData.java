@@ -12,28 +12,31 @@ import java.util.function.Consumer;
 
 public class LoadData {
 
-    public static String DATA_FILE_DIR = "/arcadia/ml-10M100K/";
-    public static String MOVIE_DAT = "movies.dat";
-
-    public static String DSE_NODE_IP = "127.0.0.1";
-
     public static void main(String[] args) throws IOException {
 
-        new LoadData().loadAndSaveMovieData();
+        String movieDataLocation = "";
+        String hostname = "";
+        if (args.length > 1) {
+            movieDataLocation = args[0];
+            System.out.println("movieDataLocation = " + movieDataLocation);
+            hostname = args[1];
+            System.out.println("hostname = " + hostname);
+            new LoadData().loadAndSaveMovieData(hostname, movieDataLocation);
+        }
+        else {
+            System.out.println("Error!  Specify movie data location!");
+        }
+
 
 
     }
 
-    private void loadAndSaveMovieData() throws IOException {
-        try (Cluster clusterConn = connect(DSE_NODE_IP)) {
+    private void loadAndSaveMovieData(String hostname, String movieDataLocation) throws IOException {
+        try (Cluster clusterConn = connect(hostname)) {
             try (Session session = clusterConn.newSession()) {
 
-                PreparedStatement statement = session.prepare(
-                        "INSERT INTO movie_db.movies " +
-                                "(movie_id, title, categories) " +
-                                "VALUES (?, ?, ?);");
-
-                readMovieData(DATA_FILE_DIR + MOVIE_DAT, movieData -> saveMovieData(statement, session, movieData));
+                PreparedStatement statement = null;
+                readMovieData(movieDataLocation, movieData -> saveMovieData(statement, session, movieData));
             }
         }
     }
@@ -85,11 +88,7 @@ public class LoadData {
     }
 
     private void saveMovieData(PreparedStatement statement, Session session, MovieData movieData) {
-        BoundStatement boundStatement = new BoundStatement(statement);
-        session.execute(boundStatement.bind(
-                movieData.getMovie_id(),
-                movieData.getTitle(),
-                movieData.getCategories()));
+
     }
 
 }
