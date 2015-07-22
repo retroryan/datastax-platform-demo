@@ -1,0 +1,16 @@
+## Spark and Solr Exercises with the Movie Lens Data
+
+# First create the movie keyspace and tables
+
+cqlsh localhost 9042 -f movie_db.cql
+
+# Then load the movie lens data into CFS
+
+dse hadoop fs -copyFromLocal ml-10M100K/ratings.dat /ml-10M100K/ratings.dat
+dse hadoop fs -copyFromLocal ml-10M100K/movies.dat /ml-10M100K/movies.dat
+dse hadoop fs -ls /ml-10M100K
+
+# Next step is to submit the Spark Job Application
+# The spark job to load and analyze the Movie Lens Data into Cassandra is Load Movie Lens Data.  Run with dse spark submit
+
+dse spark-submit --class movieAnalysis.LoadMovieData IntroSparkCassandra-0.1.jar

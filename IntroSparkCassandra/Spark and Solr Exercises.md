@@ -18,7 +18,7 @@
 
 `dse spark-submit --class movieAnalysis.LoadMovieData ./target/IntroSparkCassandra-0.1.jar true`
 
-*  Find the average of the movies use Spark SQL
+* Find the average of the movies use Spark SQL
 
 `dse spark-submit --class movieAnalysis.AnalyzeMovieData --executor-memory 2G ./target/IntroSparkCassandra-0.1.jar`
 
