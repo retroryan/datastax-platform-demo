@@ -15,7 +15,7 @@ The workshop requires the following software:
 
 ### Install & configure DSE
 
-* Download the latest [DataStax Enterprise 4.6 Release](www.datastax.com/downloads)
+* Download the latest [DataStax Enterprise 4.7 Release](www.datastax.com/downloads)
   * There are a number of different install options inculding a virtual machine or plain tarball install.
   * A tarball can be downloaded from the [Enterprise Downloads](http://downloads.datastax.com/enterprise/)
 * Create a single node cluster either on your local laptop, a virtual machine or a cloud server.
