@@ -1,0 +1,32 @@
+## STOCK CQL Demo Scripts
+
+This is an example of using CQL to create a basic Cassandra Data Model and then import data into the tables.
+
+# First create the stocks keyspace and tables
+
+cqlsh localhost 9042 -f stocks.cql
+
+# Then in cqlsh explore the tables
+
+use stocks;
+
+describe tables;
+
+describe table stock_ticks_date;
+
+# In a cqlsh import the data
+
+use stocks;
+
+COPY stock_ticks_date (tradeId, symbol, dateOffset, tradeDate, price, quantity)  FROM 'stock_ticks_date.csv';
+
+COPY stock_summary (symbol, dateOffset, open, close, low, high,totQuantity)  FROM 'stock_summary.csv';
+
+# Explore the data
+
+select * from stock_summary;
+
+select * from stock_ticks_date where symbol='ORCL' and dateoffset=16633
+    and tradeDate > '2015-07-17 23:11:45+0000' and tradeDate < '2015-07-17 23:38:18+0000';
+
+SELECT symbol, dateoffset, token(symbol, dateoffset) FROM stocks.stock_ticks_date;

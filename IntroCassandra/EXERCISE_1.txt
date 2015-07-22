@@ -1,0 +1,23 @@
+#Exercises to get familiarity with using nodetool to administor a cluster
+
+nodetool help status
+
+#Get the entire cluster status
+
+nodetool status
+
+#Get individual node status
+
+nodetool info
+
+#Get cluster settings
+
+nodetool describecluster
+
+#Get network status of current node
+
+nodetool netstats
+
+#Get compaction stats of current node
+
+nodetool compactionstats
