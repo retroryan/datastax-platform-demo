@@ -15,7 +15,7 @@ The workshop requires the following software:
 
 ### Install & configure DSE
 
-* Download the latest [DataStax Enterprise 4.6 Release](www.datastax.com/downloads)
+* Download the latest [DataStax Enterprise 4.7 Release](www.datastax.com/downloads)
   * There are a number of different install options inculding a virtual machine or plain tarball install.
   * A tarball can be downloaded from the [Enterprise Downloads](http://downloads.datastax.com/enterprise/)
 * Create a single node cluster either on your local laptop, a virtual machine or a cloud server.
@@ -29,10 +29,10 @@ The workshop requires the following software:
   * Set the log file locations with correct write permissions:
   * Cassandra log files /var/log/cassandra
   * Spark log files /var/log/spark
-* Running DSE from a terminal window with Spark enabled (tarball install):
+* Running DSE from a terminal window with Spark and Search enabled (tarball install):
   * cd to the dse directory (i.e. cd ~/dse-4.7.0)
-  * run DSE with Spark Enabled:  bin/dse cassandra -k
-* Running DSE with Spark from a package install [see these docs](http://docs.datastax.com/en/datastax_enterprise/4.6/datastax_enterprise/spark/sparkStart.html)
+  * run DSE with Spark Enabled:  bin/dse cassandra -k -s
+* Running DSE with Spark and Search from a package install [see these docs](http://docs.datastax.com/en/datastax_enterprise/4.7/datastax_enterprise/spark/sparkStart.html)
 * Verify cqlsh is running.  In a separate terminal window:
   * cd to the dse directory (i.e. cd ~/dse-4.7.0)
   * run cqlsh:   bin/cqlsh localhost
