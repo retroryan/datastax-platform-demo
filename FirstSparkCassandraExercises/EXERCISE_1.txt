@@ -12,8 +12,8 @@ dse hadoop fs -ls /ml-10M100K
 
 # Next step is to submit the Spark Job Application
 # The spark job to load and analyze the Movie Lens Data into Cassandra is Load Movie Lens Data.  Run with dse spark submit
-# Because the raitings data is fairly large you can pass a true at the end to limit the raitings data to only be the raitings for the first 100 movies.
-dse spark-submit --class movieAnalysis.LoadMovieData IntroSparkCassandra-0.1.jar true
+
+dse spark-submit --class movieAnalysis.LoadMovieData IntroSparkCassandra-0.1.jar
 
 ## Making the Movie Lens Data Searchable with Solr
 

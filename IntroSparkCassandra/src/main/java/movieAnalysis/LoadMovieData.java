@@ -38,6 +38,8 @@ public class LoadMovieData implements Serializable {
         CassandraConnector connector = SparkConfSetup.getCassandraConnector();
         initCassandra(connector);
 
+        LoadMovieData.loadMovieData(javaSparkContext);
+
         JavaRDD<MovieData> movieDataRDD = LoadMovieData.readMovieData(javaSparkContext);
         long moviesCount = movieDataRDD.count();
         System.out.println("found moviesCount = " + moviesCount);
